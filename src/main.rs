@@ -11,3 +11,5 @@ fn reply(req: Request<String>) -> Result<Response<String>> {
         .header("x-generated-by", "wasm-workers-server")
         .body(String::from("Hello wasm!"))?)
 }
+
+// なぜか動作しない,バージョンが変わったせいかも？
