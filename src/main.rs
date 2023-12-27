@@ -1,15 +1,13 @@
 use anyhow::Result;
 use wasm_workers_rs::{
     handler,
-    http::{self, Request, Response},
+    http::{Request, Response},
 };
 
-#[handler]
-fn reply(req: Request<String>) -> Result<Response<String>> {
-    Ok(http::Response::builder()
-        .status(200)
-        .header("x-generated-by", "wasm-workers-server")
-        .body(String::from("Hello wasm!"))?)
-}
+// そもそもhandlerがライブラリの中から消えているため対策必要
 
-// なぜか動作しない,バージョンが変わったせいかも？
+#[handler]
+fn reply(req: Request) -> Result<Response> {
+    Ok(Response::ok("Hello wasm!")
+        .header("x-generated-by", "wasm-workers-server")) 
+}
