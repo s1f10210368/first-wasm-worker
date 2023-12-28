@@ -1,13 +1,13 @@
-use anyhow::Result;
 use wasm_workers_rs::{
-    handler,
     http::{Request, Response},
+    StdWorkflow,
 };
 
-// そもそもhandlerがライブラリの中から消えているため対策必要
+struct HelloWorld;
 
-#[handler]
-fn reply(req: Request) -> Result<Response> {
-    Ok(Response::ok("Hello wasm!")
-        .header("x-generated-by", "wasm-workers-server")) 
+#[derive(StdWorkflow)]
+impl HelloWorld {
+    async fn handle(&self, req: Request) -> Result<Response> {
+        Ok(Response::ok("Hello wasm!").header("x-generated-by", "wasm-workers-server"))
+    }
 }
