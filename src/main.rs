@@ -7,7 +7,7 @@ struct HelloWorld;
 
 #[derive(StdWorkflow)]
 impl HelloWorld {
-    async fn handle(&self, req: Request) -> Result<Response> {
+    async fn handle(&self, req: Request) -> Result {
         Ok(Response::ok("Hello wasm!").header("x-generated-by", "wasm-workers-server"))
     }
 }
