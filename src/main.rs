@@ -1,5 +1,6 @@
 use wasm_workers_rs::{
-    http::{Request, Response},
+    bootstrap_worker,
+    http::{Request, Response}, 
     StdWorkflow,
 };
 
@@ -7,7 +8,12 @@ struct HelloWorld;
 
 #[derive(StdWorkflow)]
 impl HelloWorld {
-    async fn handle(&self, req: Request) -> Result {
-        Ok(Response::ok("Hello wasm!").header("x-generated-by", "wasm-workers-server"))
+    async fn handle(&self, req: Request) -> Response {
+        Response::ok("Hello wasm!")
     }
+}
+
+#[bootstrap_worker]
+fn main(mut worker: HelloWorld) {
+    worker.init();
 }
