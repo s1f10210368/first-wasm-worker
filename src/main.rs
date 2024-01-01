@@ -1,14 +1,15 @@
 use wasm_workers_rs::{
     bootstrap_worker, 
     http::{Request, Response},
+    StdWorkflow
 };
 
-#[derive(StdWorkflow)]
+#[derive(StdWorkflow)] 
 struct HelloWorld;
 
-#[bootstrap_worker] 
-fn main(worker: HelloWorld) {
-    worker.init();
+#[bootstrap_worker]
+fn main() {
+
 }
 
 #[derive(StdWorkflow)]
