@@ -8,4 +8,5 @@ edition = "2021"
 [dependencies]
 # anyhowはエラー処理を扱いやすくするクレート
 anyhow = "1.0.65" 
+wasm-bindgen = "0.2"
 wasm-workers-rs = { git = "https://github.com/vmware-labs/wasm-workers-server/" }
