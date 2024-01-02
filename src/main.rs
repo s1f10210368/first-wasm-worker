@@ -1,20 +1,11 @@
-use wasm_workers_rs::{
-    bootstrap_worker, 
-    http::{Request, Response},
-    StdWorkflow
-};
+use wasm_bindgen::prelude::*;
 
-#[derive(StdWorkflow)] 
-struct HelloWorld;
-
-#[bootstrap_worker]
-fn main() {
-
+#[wasm_bindgen]
+pub fn add(a: i32, b: i32) -> i32 {
+   a + b 
 }
 
-#[derive(StdWorkflow)]
-impl HelloWorld {
-    async fn handle(&self, req: Request<()>) -> Response<String> {
-        Response::ok("Hello wasm!".to_owned())
-    }
+#[wasm_bindgen(start)]
+pub fn main() {
+    // WebAssemblyの初期化
 }
