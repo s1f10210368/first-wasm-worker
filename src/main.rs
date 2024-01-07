@@ -1,36 +1,44 @@
-use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen]
-pub struct Othello {
-    board: [[i8; 8]; 8],
-    current_player: i8,
+#[handler]
+fn reply(req: Request<String>) -> Result<Response<String>> {
+    Ok(http::Response::builder()
+    .status(200)
+    .header("x-generated-by", "wasm-workers-server")
+    .body(String::from("Hello Wasm!").into())?)
 }
 
-#[wasm_bindgen]
-impl Othello {
+#[proc_macro_attribute]
+pub fn handler(attr: TokenStream, item: TokenStream) -> TokenStream {
+    expand::expand_macro(attr, item)
+}
 
-    pub fn new() -> Othello {
-        let mut board = [[0; 8]; 8];
-        board[3][3] = 1;
-        board[4][4] = 1;
-        board[3][4] = -1; 
-        board[4][3] = -1;
+const main_fn = quote! {
+    use wasm_workers_rs::io::{Input, Output};
+    use std::io::stdin;
 
-        Othello {
-            board,
-            current_player: 1,  
+    fn main() {
+        let input = Input::new(stdin());
+        let error = Output::new(
+            "There was an error running the handler",
+            500,
+            None,
+            None
+        ).to_json().unwrap();
+
+        if let Ok(input) = input {
+            let mut cache = input.cache_data();
+
+            if let Ok(response) = #func_call {
+                match Output::from_response(response, cache).to_json() {
+                    Ok(res) => println!("{}", res),
+                    Err(_) => println!("{}", error)
+                }
+            } else {
+                println!("{}", error)
+            }
+        } else {
+            println!("{}", error)
         }
     }
 
-    pub fn make_move(&mut self, x: usize, y: usize) {
-        // 石を置く処理
-    }
-
-    pub fn get_current_player(&self) -> i8 {
-        self.current_player
-    }
-
-}
-
-
-_
+    #handler_fn
+};
